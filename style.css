@@ -1,0 +1,74 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    min-height: 100vh;
+    background-color: gainsboro;
+}
+
+.navbar{
+    height: 10vh;
+    background-color: red !important;
+}
+
+.navbar-brand{
+    font-size: 200%;
+    margin-left: 50px;
+    margin-right: 60px;
+}
+
+.nav-item{
+    /* margin-left: 30px; */
+    margin-right: 30px;
+}
+
+.navbar a{
+    color: white !important;
+    font-weight: bolder;
+}
+
+.navbar a:hover{
+    color: black !important;
+}
+
+.buscadorNavbar{
+    height: fit-content;
+}
+
+.botonNavbar{
+    border: solid white 2px;
+    color: white;
+}
+
+.flexDelForm{
+    align-items: center;
+}
+
+.pulsadoresMain{
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+    min-width: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.divDePulsadores{
+    justify-items: center;
+}
+
+.pulsadorIndividual{
+    margin-top: 50px;
+    width: 300px;
+    background-color: red;
+    border: solid white 1px;
+}
+
+.pulsadorIndividual:hover{
+    color: black;
+    background-color: white;
+    border: solid red 2px;
+    font-weight: bold;
+}

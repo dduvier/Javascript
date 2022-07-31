@@ -19,6 +19,10 @@ body{
     margin-right: 60px;
 }
 
+.menuDesplegable{
+    background-color: red;
+}
+
 .nav-item{
     /* margin-left: 30px; */
     margin-right: 30px;
@@ -35,11 +39,13 @@ body{
 
 .buscadorNavbar{
     height: fit-content;
+    margin-bottom: 15px;
 }
 
 .botonNavbar{
     border: solid white 2px;
     color: white;
+    margin-bottom: 15px;
 }
 
 .flexDelForm{

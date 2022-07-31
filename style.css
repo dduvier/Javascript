@@ -66,9 +66,19 @@ body{
     border: solid white 1px;
 }
 
+.pulsadorIndividual:focus{
+    color: white;
+    background-color: red;
+    border: solid white 1px;
+}
+
 .pulsadorIndividual:hover{
     color: black;
     background-color: white;
     border: solid red 2px;
     font-weight: bold;
+}
+
+.btn-primary{
+    --bs-btn-focus-shadow-rgb: none;
 }

@@ -38,13 +38,11 @@ body{
 
 .buscadorNavbar{
     height: fit-content;
-    margin-bottom: 15px;
 }
 
 .botonNavbar{
     border: solid white 2px;
     color: white;
-    margin-bottom: 15px;
 }
 
 .flexDelForm{
@@ -86,4 +84,14 @@ body{
 
 .btn-primary{
     --bs-btn-focus-shadow-rgb: none;
+}
+
+@media(max-width:991px){
+    .buscadorNavbar{
+        margin-bottom: 15px;
+    }
+    
+    .botonNavbar{
+        margin-bottom: 15px;
+    }
 }

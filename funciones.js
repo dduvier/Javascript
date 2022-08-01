@@ -35,6 +35,27 @@ menu = "\n\nLista de productos: \n\n" +
         "10 - " + producto10.nombre + " --> Precio: $" + producto10.precio + "\n" +
         "11 - " + producto11.nombre + " --> Precio: $" + producto11.precio + "\n\n";
 
+function primerMenu(){
+    let opcion;
+    opcion = prompt("Que desea hacer?\n 1 - Cargar productos\n 2 - Ver orden\n 3 - Borrar orden\n 4 - Enviar orden");
+    switch(opcion){
+        case "1":
+            cargarProductos();
+            break;
+        case "2":
+            verOrden();
+            break;
+        case "3":
+            borrarOrden();
+            break;
+        case "4":
+            enviarOrden();
+            break;
+        default:
+            alert("ERROR - Opcion invalida!");
+            break;
+    }
+}
 
 function cargarProductos(){
     let entrada;
@@ -133,4 +154,8 @@ function enviarOrden(){
     else{
         alert("Accion CANCELADA!");
     }
+}
+
+while(true){
+    primerMenu();
 }

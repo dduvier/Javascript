@@ -27,6 +27,21 @@ body{
     margin-right: 30px;
 }
 
+.opcionesNav{
+    visibility: visible;
+}
+
+.totalNav{
+    color: white;
+    font-size: 120%;
+}
+
+#varibleTotal{
+    color: white;
+    font-size: 120%;
+
+}
+
 .navbar a{
     color: white !important;
     font-weight: bolder;
@@ -34,6 +49,32 @@ body{
 
 .navbar a:hover{
     color: black !important;
+}
+
+.btnCarrito{
+    background-color: red;
+    border: solid white 2px;
+    margin-top: 5px;
+}
+
+.btnCarrito:hover{
+    background-color: white;
+    font-weight: bolder;
+    color: red;
+    border: solid red 2px;
+}
+
+.btnCarrito2{
+    visibility: hidden;
+    background-color: red;
+    border: solid white 2px;
+}
+
+.btnCarrito2:hover{
+    background-color: white;
+    font-weight: bolder;
+    color: red;
+    border: solid red 2px;
 }
 
 .buscadorNavbar{
@@ -49,10 +90,32 @@ body{
     align-items: center;
 }
 
+.formularioLogin{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.form-controlLogin{
+    width: 300px;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+#sectionJS{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    max-width: 800px;
+    justify-content: center;
+    align-items: center;
+}
+
 .pulsadoresMain{
     display: flex;
     flex-direction: column;
-    min-height: 90vh;
+    min-height: 60vh;
     min-width: 100vw;
     justify-content: center;
     align-items: center;
@@ -93,5 +156,13 @@ body{
     
     .botonNavbar{
         margin-bottom: 15px;
+    }
+
+    .btnCarrito2{
+        visibility: visible;
+    }
+
+    .btnCarrito{
+        visibility: hidden;
     }
 }

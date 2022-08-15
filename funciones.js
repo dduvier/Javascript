@@ -15,6 +15,9 @@ class producto{
 const productos = [];
 const ordenActual = [];
 
+//---------- Variables Globales ----------
+let acceso = false;
+
 //---------- Creacion y carga de primeros productos ----------
 const producto01 = new producto(1, "Papas Fritas" , 500);
 const producto02 = new producto(2, "Papas Fritas c/Cheddar y panceta", 700);
@@ -136,4 +139,30 @@ function menuPrincipal(){
 let salirWhile = true;
 while(salirWhile){
     menuPrincipal();
+}
+
+let precioTotalObj;
+let itemsCarritoObj;
+let precioTotalTemp;
+let itemsCarritoTemp;
+precioTotalTemp = ordenActual.reduce((acumulador,precioObjeto)=>acumulador+precioObjeto.precio,0);
+itemsCarritoTemp = ordenActual.length;
+precioTotalObj = document.getElementById("precioFinal");
+itemsCarritoObj = document.getElementById("itemsCarrito");
+precioTotalObj.innerText = precioTotalTemp;
+itemsCarritoObj.innerText = itemsCarritoTemp;
+
+let padre;
+let titulo;
+titulo = document.createElement("h3");
+titulo.innerHTML = "<h3>Listado de productos: \n</h3>";
+padre = document.getElementById("listaProductos");
+padre.appendChild(titulo);
+for(const producto of ordenActual){
+    let listItem;
+    let stringObj;
+    listItem = document.createElement("li");
+    stringObj = "Producto: " + producto.nombre + "  -  Precio: " + producto.precio;
+    listItem.innerHTML = stringObj;
+    padre.appendChild(listItem);
 }

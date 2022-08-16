@@ -42,6 +42,12 @@ productos.push(producto09);
 productos.push(producto10);
 productos.push(producto11);
 
+let btnCargarProductos = document.getElementById("btnCargarProductos");
+let btnVerPedido = document.getElementById("btnVerPedido");
+let btnBorrarOrden = document.getElementById("btnBorrarOrden");
+let btnEnviarPedido = document.getElementById("btnEnviarPedido");
+
+
 //---------- FUNCIONES ----------
 function printMenu(){
     let menuObj = "\n\n";
@@ -59,10 +65,11 @@ function printOrden(){
     return ordenObj;
 }
 
-function cargarProductos(){
+btnCargarProductos.onclick = () => {
     let entrada;
     let objetoBuscado;
     while(entrada!="ESC"){
+        actualizarDom(); 
         entrada = prompt("Ingrese el indice del producto que desea agregar al pedido:" + "\nPara terminar ingrese ESC" + printMenu());
         if(productos.some((index)=>index.id==entrada)){
             objetoBuscado = productos.find((index)=>index.id==entrada);
@@ -76,9 +83,10 @@ function cargarProductos(){
             alert("ERROR - Opcion invalida! \nPara salir ingrese con su teclado: ESC");
         }
     }
+    actualizarListaMenu();
 }
 
-function verOrden(){
+btnVerPedido.onclick = () => {
     let precioTotal;
     let pedidoMostrar = [];
     precioTotal = ordenActual.reduce((acumulador,precioObjeto)=>acumulador+precioObjeto.precio,0);
@@ -86,7 +94,7 @@ function verOrden(){
     alert("Pedido:\n" + printOrden() + "\nPrecio Total: $" + precioTotal);
 }
 
-function borrarOrden(){
+btnBorrarOrden.onclick = () => {
     let confirmacion;
     confirmacion = confirm("Desea borrar el pedido?");
     if(confirmacion){
@@ -96,9 +104,11 @@ function borrarOrden(){
     else{
         alert("Accion CANCELADA!");
     }
+    actualizarDom();
+    actualizarListaMenu();
 }
 
-function enviarOrden(){
+btnEnviarPedido.onclick = () => {
     let confirmacion;
     confirmacion = confirm("Desea enviar el pedido?");
     if(confirmacion){
@@ -108,61 +118,38 @@ function enviarOrden(){
     else{
         alert("Accion CANCELADA!");
     }
+    actualizarDom();
+    actualizarListaMenu();
 }
 
-function menuPrincipal(){
-    let opcion;
-    opcion = prompt("Que desea hacer?\n 1 - Cargar productos\n 2 - Ver orden\n 3 - Borrar orden\n 4 - Enviar orden");
-    switch(opcion){
-        case "1":
-            cargarProductos();
-            break;
-        case "2":
-            verOrden();
-            break;
-        case "3":
-            borrarOrden();
-            break;
-        case "4":
-            enviarOrden();
-            break;
-        case null:
-            salirWhile = false;
-            break;
-        default:
-            alert("ERROR - Opcion invalida!");
-            break;
+function actualizarDom(){
+    let precioTotalObj;
+    let itemsCarritoObj;
+    let precioTotalTemp;
+    let itemsCarritoTemp;
+    precioTotalTemp = ordenActual.reduce((acumulador,precioObjeto)=>acumulador+precioObjeto.precio,0);
+    itemsCarritoTemp = ordenActual.length;
+    precioTotalObj = document.getElementById("precioFinal");
+    itemsCarritoObj = document.getElementById("itemsCarrito");
+    precioTotalObj.innerText = precioTotalTemp;
+    itemsCarritoObj.innerText = itemsCarritoTemp;
+}
+
+function actualizarListaMenu(){
+    let padre;
+    let titulo;
+    padre = document.getElementById("listaProductos");
+    titulo = document.createElement("h3");
+    titulo.innerHTML = "Listado de productos: \n";
+    padre.innerHTML = "";
+    padre.appendChild(titulo);
+    for(const producto of ordenActual){
+        let listItem;
+        let stringObj;
+        listItem = document.createElement("li");
+        stringObj = "Producto: " + producto.nombre + "  -  Precio: " + producto.precio;
+        listItem.innerText = stringObj;
+        padre.appendChild(listItem);
     }
 }
 
-//---------- BUCLE PRINCIPAL ----------
-let salirWhile = true;
-while(salirWhile){
-    menuPrincipal();
-}
-
-let precioTotalObj;
-let itemsCarritoObj;
-let precioTotalTemp;
-let itemsCarritoTemp;
-precioTotalTemp = ordenActual.reduce((acumulador,precioObjeto)=>acumulador+precioObjeto.precio,0);
-itemsCarritoTemp = ordenActual.length;
-precioTotalObj = document.getElementById("precioFinal");
-itemsCarritoObj = document.getElementById("itemsCarrito");
-precioTotalObj.innerText = precioTotalTemp;
-itemsCarritoObj.innerText = itemsCarritoTemp;
-
-let padre;
-let titulo;
-titulo = document.createElement("h3");
-titulo.innerHTML = "<h3>Listado de productos: \n</h3>";
-padre = document.getElementById("listaProductos");
-padre.appendChild(titulo);
-for(const producto of ordenActual){
-    let listItem;
-    let stringObj;
-    listItem = document.createElement("li");
-    stringObj = "Producto: " + producto.nombre + "  -  Precio: " + producto.precio;
-    listItem.innerHTML = stringObj;
-    padre.appendChild(listItem);
-}

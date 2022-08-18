@@ -140,7 +140,7 @@ function actualizarListaMenu(){
     let titulo;
     padre = document.getElementById("listaProductos");
     titulo = document.createElement("h3");
-    titulo.innerHTML = "Listado de productos: \n";
+    titulo.innerHTML = "Listado del carrito: \n";
     padre.innerHTML = "";
     padre.appendChild(titulo);
     for(const producto of ordenActual){

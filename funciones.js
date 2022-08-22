@@ -1,8 +1,11 @@
+//--------------- CLASES ----------------------------------------------------------------
 class producto{
-    constructor(id, nombre, precio, descripcion, sintacc, vegetariano, vegano, alcohol){
+    constructor(id, nombre, precio, cantidad, precioSemi, descripcion, sintacc, vegetariano, vegano, alcohol){
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
+        this.cantidad = cantidad;
+        this.precioSemi = precioSemi;
         this.descripcion = descripcion;
         this.sintacc = sintacc;
         this.vegetariano = vegetariano;
@@ -12,36 +15,12 @@ class producto{
 }
 
 //---------- ARRAYS ----------
-const productos = [];
-const ordenActual = [];
+let ordenActual = [];
 
 //---------- Variables Globales ----------
 let acceso = false;
 
-//---------- Creacion y carga de primeros productos ----------
-const producto01 = new producto(1, "Papas Fritas" , 500);
-const producto02 = new producto(2, "Papas Fritas c/Cheddar y panceta", 700);
-const producto03 = new producto(3, "Rabas" , 2000);
-const producto04 = new producto(4, "Hamburguesa" , 900);
-const producto05 = new producto(5, "Hamburguesa Completa" , 1200);
-const producto06 = new producto(6, "Tacos" , 1000);
-const producto07 = new producto(7, "Empanadas" , 150);
-const producto08 = new producto(8, "Pancho" , 600);
-const producto09 = new producto(9, "Agua 600cc" , 250);
-const producto10 = new producto(10, "Cerveza 500cc" , 450);
-const producto11 = new producto(11, "Gaseosa 600cc" , 350);
-productos.push(producto01);
-productos.push(producto02);
-productos.push(producto03);
-productos.push(producto04);
-productos.push(producto05);
-productos.push(producto06);
-productos.push(producto07);
-productos.push(producto08);
-productos.push(producto09);
-productos.push(producto10);
-productos.push(producto11);
-
+//--------------- NODOS ----------------------------------------------------------------
 const btnCargarProductos = document.getElementById("btnCargarProductos");
 const btnVerPedido = document.getElementById("btnVerPedido");
 const btnBorrarOrden = document.getElementById("btnBorrarOrden");
@@ -125,13 +104,20 @@ btnEnviarPedido.onclick = () => {
     actualizarListaMenu();
 }
 
+function precioParcial(objeto){
+    objeto.precioSemi = objeto.precio * objeto.cantidad;
+}
+
 function actualizarDom(){
     let precioTotalObj;
     let itemsCarritoObj;
     let precioTotalTemp;
     let itemsCarritoTemp;
-    precioTotalTemp = ordenActual.reduce((acumulador,precioObjeto)=>acumulador+precioObjeto.precio,0);
-    itemsCarritoTemp = ordenActual.length;
+    ordenActual.forEach(element => {
+        precioParcial(element);
+    });
+    precioTotalTemp = ordenActual.reduce((acumulador,precioObjeto)=>acumulador+precioObjeto.precioSemi,0);
+    itemsCarritoTemp = ordenActual.reduce((acumulador,cantidadObjeto)=>acumulador+cantidadObjeto.cantidad,0);
     precioTotalObj = document.getElementById("precioFinal");
     itemsCarritoObj = document.getElementById("itemsCarrito");
     precioTotalObj.innerText = precioTotalTemp;
@@ -156,24 +142,62 @@ function actualizarListaMenu(){
     }
 }
 
-function agregarCarrito(idTemp){
+//Agrega el producto al array ordenActual con push (mi pedido)
+function agregarCarrito(prodTemp){
     let objetoBuscado;
-    actualizarDom(); 
-    if(productos.some((index)=>index.id==idTemp)){
-        objetoBuscado = productos.find((index)=>index.id==idTemp);
-        ordenActual.push(objetoBuscado);
-        alert("Se agrego 1 x " + objetoBuscado.nombre + " a su pedido!");
+    if(productos.some((index)=>index.id==prodTemp.id)){
+        let existeEnOrden;
+        existeEnOrden = ordenActual.find( (index)=>index.id == prodTemp.id);
+        if(!existeEnOrden){
+            objetoBuscado = productos.find((index)=>index.id == prodTemp.id);
+            objetoBuscado.cantidad = 1;
+            ordenActual.push(objetoBuscado);
+            mostrarCarrito(prodTemp);
+        }
+        else{
+            console.log("Ya esta en el carrito");
+            objetoBuscado = productos.find((index)=>index.id == prodTemp.id);
+            objetoBuscado.cantidad = objetoBuscado.cantidad + 1;
+            ordenActual = ordenActual.filter( prod => prod.id !== prodTemp.id);
+            ordenActual.push(objetoBuscado);
+            const variableAux = document.getElementById(`cantidad${existeEnOrden.cantidad-1}${existeEnOrden.nombre}`);
+            variableAux.innerHTML = `<p id="cantidad${existeEnOrden.cantidad}${existeEnOrden.nombre}"> Cant.: ${existeEnOrden.cantidad}</p>`;
+        }
     }
     else{
         alert("ERROR - No se agrego el producto!");
     }
     actualizarListaMenu();
     actualizarDom();
+    console.log("Prod: "+ objetoBuscado.nombre + "\nCantidad: " + objetoBuscado.cantidad);
+    
 }
 
+//Agrega el "div" del producto al MODAL del Carrito
+function mostrarCarrito(productoTemp){
 
+            let div = document.createElement("div");
+            div.className = "productoEnCarrito";
+            div.innerHTML = `
+                                <div class="modal-body">
+                                    <p class="modalTituloProducto">${productoTemp.nombre}</p>
+                                    <p> Precio(unid): $${productoTemp.precio}</p>
+                                    <p id="cantidad${productoTemp.cantidad}${productoTemp.nombre}"> Cant.: ${productoTemp.cantidad}</p>
+                                    <button class="productoEliminar" id="eliminarProducto${productoTemp.id}" >X1</button>
+                                </div>
+                            `
+            carritoModal.appendChild(div);
 
+        let btnEliminar = document.getElementById(`eliminarProducto${productoTemp.id}`);
+        btnEliminar.addEventListener("click", ()=>{
+            ordenActual = ordenActual.filter( prod => prod.id !== productoTemp.id);
+            btnEliminar.parentElement.remove();
+            actualizarListaMenu();
+            actualizarDom();
+        });
+}
 
+//Imprime CARDs y escucha clicks para agregarCarrito() y mostrarCarrito()
 function mostrarProductos(){
     productos.forEach(prod => {
         let div = document.createElement("div");
@@ -192,24 +216,12 @@ function mostrarProductos(){
         seccionMenu.appendChild(div);
         let btnClickeado = document.getElementById(`btnCardId${prod.id}`);
         btnClickeado.addEventListener("click", ()=>{console.log(prod.id);});
-        btnClickeado.addEventListener("click", ()=>{agregarCarrito(prod.id);});
-        btnClickeado.addEventListener("click", ()=>{mostrarCarrito(prod);});
+        btnClickeado.addEventListener("click", ()=>{agregarCarrito(prod);});
         actualizarListaMenu();
         actualizarDom();
     })
 }
 
-mostrarProductos();
 
-function mostrarCarrito(productoTemp){
-    let div = document.createElement("div");
-    div.className = "productoEnCarrito";
-    div.innerHTML = `
-                        <div class="modal-body">
-                            <h4>${productoTemp.nombre}</h4>
-                            <p> Precio: $${productoTemp.precio}</p>
-                            <button class="productoEliminar">X1</button>
-                        </div>
-                    `
-    carritoModal.appendChild(div);
-}
+//FUNCION PRINCIPAL-----------------------------------------------------------
+mostrarProductos();

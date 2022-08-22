@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comidas | Inicio</title>
+    <title>Comidas | Registro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body class="body">
+
 <!------------- NAVBAR ----------- -->
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid menuDesplegable">
@@ -22,30 +22,31 @@
 
         <section class="formularioLogin">
             <form>
-                <div class="tituloLogin">
+                <div class="tituloRegistro">
                     <h3>
-                        Ingresa con tu usuario
+                        Registrate
                     </h3>
                 </div>
-
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Nombre</label>
+                    <input type="text" class="form-control form-controlLogin" id="userName" aria-describedby="emailHelp">
+                </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Usuario</label>
-                    <input type="text" class="form-control form-controlLogin" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <input type="text" class="form-control form-controlLogin" id="userMail" aria-describedby="emailHelp">
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control form-controlLogin" id="exampleInputPassword1">
+                    <input type="password" class="form-control form-controlLogin" id="userPassword">
                 </div>
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="mantenerLogin">
                     <label class="form-check-label" for="exampleCheck1">Mantenerme logeado</label>
                 </div>
-                <button type="button" id="btnRegistro" class="btn btn-primary">Registrarme</button>
-                <button type="button" id="btnLogin" class="btn btn-primary">Ingresar</button>
+                <button type="button" id="btnRegistroLogin" class="btn btn-primary">Registrarme e Ingresar</button>
               </form>
-
               <div>
-                <p>Ingrese usuario y contraseña...</p>
+                <p>Registrate para acceder al menu...</p>
               </div>
         </section>
 
@@ -60,6 +61,13 @@
             <li> <a href="https://twitter.com/" target="_blank">Twitter</a></li>
         </ol>
     </footer>
+
+
+
+
+
+
+
 
     <script src="funciones.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>

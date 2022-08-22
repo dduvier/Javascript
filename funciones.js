@@ -42,10 +42,13 @@ productos.push(producto09);
 productos.push(producto10);
 productos.push(producto11);
 
-let btnCargarProductos = document.getElementById("btnCargarProductos");
-let btnVerPedido = document.getElementById("btnVerPedido");
-let btnBorrarOrden = document.getElementById("btnBorrarOrden");
-let btnEnviarPedido = document.getElementById("btnEnviarPedido");
+const btnCargarProductos = document.getElementById("btnCargarProductos");
+const btnVerPedido = document.getElementById("btnVerPedido");
+const btnBorrarOrden = document.getElementById("btnBorrarOrden");
+const btnEnviarPedido = document.getElementById("btnEnviarPedido");
+const btnCardId = document.getElementById("btnCardId");
+const seccionMenu = document.getElementById("menu");
+const carritoModal = document.getElementById("productosEnCarrito");
 
 
 //---------- FUNCIONES ----------
@@ -153,3 +156,60 @@ function actualizarListaMenu(){
     }
 }
 
+function agregarCarrito(idTemp){
+    let objetoBuscado;
+    actualizarDom(); 
+    if(productos.some((index)=>index.id==idTemp)){
+        objetoBuscado = productos.find((index)=>index.id==idTemp);
+        ordenActual.push(objetoBuscado);
+        alert("Se agrego 1 x " + objetoBuscado.nombre + " a su pedido!");
+    }
+    else{
+        alert("ERROR - No se agrego el producto!");
+    }
+    actualizarListaMenu();
+    actualizarDom();
+}
+
+
+
+
+function mostrarProductos(){
+    productos.forEach(prod => {
+        let div = document.createElement("div");
+        div.className = "producto";
+        div.innerHTML = `
+                            <div class="card" style="width: 18rem;">
+                                <img src="" class="card-img-top" alt="">
+                                <div class="card-body">
+                                    <h5 class="card-title">${prod.nombre}</h5>
+                                    <p class="card-text">${prod.descripcion}</p>
+                                    <h6>$${prod.precio}</h6>
+                                    <a href="#" class="btn btn-primary btnCard" id="btnCardId${prod.id}" >Agregar</a>
+                                </div>
+                            </div>
+                        `
+        seccionMenu.appendChild(div);
+        let btnClickeado = document.getElementById(`btnCardId${prod.id}`);
+        btnClickeado.addEventListener("click", ()=>{console.log(prod.id);});
+        btnClickeado.addEventListener("click", ()=>{agregarCarrito(prod.id);});
+        btnClickeado.addEventListener("click", ()=>{mostrarCarrito(prod);});
+        actualizarListaMenu();
+        actualizarDom();
+    })
+}
+
+mostrarProductos();
+
+function mostrarCarrito(productoTemp){
+    let div = document.createElement("div");
+    div.className = "productoEnCarrito";
+    div.innerHTML = `
+                        <div class="modal-body">
+                            <h4>${productoTemp.nombre}</h4>
+                            <p> Precio: $${productoTemp.precio}</p>
+                            <button class="productoEliminar">X1</button>
+                        </div>
+                    `
+    carritoModal.appendChild(div);
+}

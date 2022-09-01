@@ -5,17 +5,31 @@
 
 .body{
     min-height: 100vh;
+    width: 98%;
     background-color: gainsboro;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     flex-wrap: nowrap;
+}
 
+.bodyLogin{
+    min-height: 100vh;
+    width: 98%;
+    background-color: gainsboro;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-wrap: nowrap;
 }
 
 .navbar{
     height: 10vh;
     background-color: red !important;
+    position: fixed;
+    width: 100%;
+    border: solid white 2px;
+    z-index: 5;
 }
 
 .navbar-brand{
@@ -68,17 +82,27 @@
     align-items: center;
 }
 
+.mainMenu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
 .formularioLogin{
     background-color: goldenrod;
     border-radius: 20px;
-    margin-top: 30px !important;
+    margin-top: 150px;
     margin-bottom: 30px;
-    padding-top: 70px;
-    padding-bottom: 70px;
+    padding-top: 50px;
+    padding-bottom: 50px;
     padding-left: 50px;
     padding-right: 50px;
     max-width: 400px;
-    justify-self: center;
+    /*justify-self: center;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .tituloLogin{
@@ -184,14 +208,6 @@
     align-items: center;
 }
 
-.formularioLogin{
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-}
-
 .form-controlLogin{
     width: 300px;
     padding: 8px;
@@ -201,15 +217,20 @@
 #sectionJS{
     margin-top: 50px;
     margin-bottom: 50px;
-    max-width: 800px;
+    max-width: 1000px;
     justify-content: center;
     align-items: center;
+}
+
+#menu{
+    margin-bottom: 100px;
 }
 
 .tituloMenu{
     display: block;
     width: 100vw;
     margin: 30px;
+    margin-top: 100px;
 }
 
 .card{
@@ -245,6 +266,16 @@
     color: black;
 }
 
+.card-img-top{
+    width: 286px;
+    height: 190px;
+}
+
+.card-body{
+    width: 286px;
+    min-height: 244px;
+}
+
 .productoEnCarrito div{
     display: flex;
     flex-direction: row;
@@ -270,48 +301,18 @@
     padding: 8px;
 }
 
-.pulsadoresMain{
-    display: flex;
-    flex-direction: column;
-    min-height: 60vh;
-    min-width: 100vw;
-    justify-content: center;
-    align-items: center;
-}
-
-.divDePulsadores{
-    justify-items: center;
-}
-
-.pulsadorIndividual{
-    margin-top: 30px;
-    margin-bottom: 30px;
-    width: 300px;
-    background-color: red;
-    border: solid white 1px;
-}
-
-.pulsadorIndividual:focus{
-    color: white;
-    background-color: red;
-    border: solid white 1px;
-}
-
-.pulsadorIndividual:hover{
-    color: black;
-    background-color: white;
-    border: solid red 2px;
-    font-weight: bold;
-}
-
 .btn-primary{
     --bs-btn-focus-shadow-rgb: none;
 }
 
 .footer{
     height: 10vh;
+    position: fixed;
     background-color: red;
-    margin-top: 0 auto;
+    margin-top: 90vh;
+    width: 100%;
+    border: solid white 2px;
+    z-index: 5;
 }
 
 

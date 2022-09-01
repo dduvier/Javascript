@@ -1,116 +1,28 @@
-//--------------- CLASES ----------------------------------------------------------------
-class producto{
-    constructor(id, nombre, precio, cantidad, precioSemi, descripcion, sintacc, vegetariano, vegano, alcohol){
-        this.id = id;
-        this.nombre = nombre;
-        this.precio = precio;
-        this.cantidad = cantidad;
-        this.precioSemi = precioSemi;
-        this.descripcion = descripcion;
-        this.sintacc = sintacc;
-        this.vegetariano = vegetariano;
-        this.vegano = vegano;
-        this.alcohol = alcohol;
-    }
-}
-
-//---------- ARRAYS ----------
+//---------- ARRAYS --------------------------------------------------------------------
 let ordenActual = [];
+let ordenActualString;
 
-//---------- Variables Globales ----------
-let acceso = false;
+//---------- Variables Globales --------------------------------------------------------
+let primerAcceso = true;
 
 //--------------- NODOS ----------------------------------------------------------------
-const btnCargarProductos = document.getElementById("btnCargarProductos");
-const btnVerPedido = document.getElementById("btnVerPedido");
-const btnBorrarOrden = document.getElementById("btnBorrarOrden");
-const btnEnviarPedido = document.getElementById("btnEnviarPedido");
 const btnCardId = document.getElementById("btnCardId");
 const seccionMenu = document.getElementById("menu");
 const carritoModal = document.getElementById("productosEnCarrito");
 
 
-//---------- FUNCIONES ----------
-function printMenu(){
-    let menuObj = "\n\n";
-    for(const productoTemp of productos){
-        menuObj = menuObj + productoTemp.id + " - " + productoTemp.nombre + " - $" + productoTemp.precio + "\n";
-    }
-    return menuObj;
-}
-
-function printOrden(){
-    let ordenObj = "";
-    for(const productoTemp of ordenActual){
-        ordenObj = ordenObj + productoTemp.nombre + " - $" + productoTemp.precio + "\n";
-    }
-    return ordenObj;
-}
-
-btnCargarProductos.onclick = () => {
-    let entrada;
-    let objetoBuscado;
-    while(entrada!="ESC"){
-        actualizarDom(); 
-        entrada = prompt("Ingrese el indice del producto que desea agregar al pedido:" + "\nPara terminar ingrese ESC" + printMenu());
-        if(productos.some((index)=>index.id==entrada)){
-            objetoBuscado = productos.find((index)=>index.id==entrada);
-            ordenActual.push(objetoBuscado);
-            alert("Se agrego 1 x " + objetoBuscado.nombre + " a su pedido!");
-        }
-        else if(entrada == null){
-            entrada = "ESC";
-        }
-        else if(entrada!="ESC"){
-            alert("ERROR - Opcion invalida! \nPara salir ingrese con su teclado: ESC");
-        }
-    }
-    actualizarListaMenu();
-}
-
-btnVerPedido.onclick = () => {
-    let precioTotal;
-    let pedidoMostrar = [];
-    precioTotal = ordenActual.reduce((acumulador,precioObjeto)=>acumulador+precioObjeto.precio,0);
-    pedidoMostrar = ordenActual.map((objetoOrdenActual)=>(`${objetoOrdenActual.nombre} $${objetoOrdenActual.precio}\n`));
-    alert("Pedido:\n" + printOrden() + "\nPrecio Total: $" + precioTotal);
-}
-
-btnBorrarOrden.onclick = () => {
-    let confirmacion;
-    confirmacion = confirm("Desea borrar el pedido?");
-    if(confirmacion){
-        ordenActual.splice(0, ordenActual.length);
-        alert("Su pedido ha sido borrado!");
-    }
-    else{
-        alert("Accion CANCELADA!");
-    }
-    actualizarDom();
-    actualizarListaMenu();
-}
-
-btnEnviarPedido.onclick = () => {
-    let confirmacion;
-    confirmacion = confirm("Desea enviar el pedido?");
-    if(confirmacion){
-        ordenActual.splice(0, ordenActual.length);
-        alert("Su pedido ha sido enviado!");
-    }
-    else{
-        alert("Accion CANCELADA!");
-    }
-    actualizarDom();
-    actualizarListaMenu();
-}
-
+//---------- FUNCIONES ----------------------------------------------------------------
+//funcion que calcula el precio por la cantidad de producto y lo escribe en el precio parcial del objeto (precioSemi)
 function precioParcial(objeto){
     objeto.precioSemi = objeto.precio * objeto.cantidad;
 }
 
+//Actualiza el precio final y cantidad de items del carrito
 function actualizarDom(){
     let precioTotalObj;
+    let precioTotalObj2;
     let itemsCarritoObj;
+    let itemsCarritoObj2;
     let precioTotalTemp;
     let itemsCarritoTemp;
     ordenActual.forEach(element => {
@@ -119,27 +31,13 @@ function actualizarDom(){
     precioTotalTemp = ordenActual.reduce((acumulador,precioObjeto)=>acumulador+precioObjeto.precioSemi,0);
     itemsCarritoTemp = ordenActual.reduce((acumulador,cantidadObjeto)=>acumulador+cantidadObjeto.cantidad,0);
     precioTotalObj = document.getElementById("precioFinal");
+    precioTotalObj2 = document.getElementById("precioFinal2");
     itemsCarritoObj = document.getElementById("itemsCarrito");
+    itemsCarritoObj2 = document.getElementById("itemsCarrito2");
     precioTotalObj.innerText = precioTotalTemp;
+    precioTotalObj2.innerText = precioTotalTemp;
     itemsCarritoObj.innerText = itemsCarritoTemp;
-}
-
-function actualizarListaMenu(){
-    let padre;
-    let titulo;
-    padre = document.getElementById("listaProductos");
-    titulo = document.createElement("h3");
-    titulo.innerHTML = "Listado del carrito: \n";
-    padre.innerHTML = "";
-    padre.appendChild(titulo);
-    for(const producto of ordenActual){
-        let listItem;
-        let stringObj;
-        listItem = document.createElement("li");
-        stringObj = "Producto: " + producto.nombre + "  -  Precio: " + producto.precio;
-        listItem.innerText = stringObj;
-        padre.appendChild(listItem);
-    }
+    itemsCarritoObj2.innerText = itemsCarritoTemp;
 }
 
 //Agrega el producto al array ordenActual con push (mi pedido)
@@ -150,7 +48,11 @@ function agregarCarrito(prodTemp){
         existeEnOrden = ordenActual.find( (index)=>index.id == prodTemp.id);
         if(!existeEnOrden){
             objetoBuscado = productos.find((index)=>index.id == prodTemp.id);
-            objetoBuscado.cantidad = 1;
+            if(prodTemp.cantidad){
+                objetoBuscado.cantidad = prodTemp.cantidad;
+            }else{
+                objetoBuscado.cantidad = 1;
+            }
             ordenActual.push(objetoBuscado);
             mostrarCarrito(prodTemp);
         }
@@ -163,12 +65,20 @@ function agregarCarrito(prodTemp){
             const variableAux = document.getElementById(`cantidad${existeEnOrden.cantidad-1}${existeEnOrden.nombre}`);
             variableAux.innerHTML = `<p id="cantidad${existeEnOrden.cantidad}${existeEnOrden.nombre}"> Cant.: ${existeEnOrden.cantidad}</p>`;
         }
+        if(!primerAcceso){
+            swal({
+                title: "Producto Agregado!",
+                text: `Se agrego ${objetoBuscado.nombre} al carrito`,
+                icon: "success",
+                button: "OK",
+              });
+        }
     }
     else{
         alert("ERROR - No se agrego el producto!");
     }
-    actualizarListaMenu();
     actualizarDom();
+    guardarOrdenLocalStorage();
     console.log("Prod: "+ objetoBuscado.nombre + "\nCantidad: " + objetoBuscado.cantidad);
     
 }
@@ -190,10 +100,39 @@ function mostrarCarrito(productoTemp){
 
         let btnEliminar = document.getElementById(`eliminarProducto${productoTemp.id}`);
         btnEliminar.addEventListener("click", ()=>{
-            ordenActual = ordenActual.filter( prod => prod.id !== productoTemp.id);
-            btnEliminar.parentElement.remove();
-            actualizarListaMenu();
+            let objetoBuscado;
+            objetoBuscado = productos.find((index)=>index.id == productoTemp.id);
+            if(productoTemp.cantidad == 1){
+                productoTemp.cantidad = 0;
+                objetoBuscado.cantidad = 0;
+                ordenActual = ordenActual.filter( prod => prod.id !== productoTemp.id);
+                btnEliminar.parentElement.remove();
+            }
+            if(productoTemp.cantidad > 1){
+                ordenActual = ordenActual.filter( prod => prod.id !== productoTemp.id);
+                productoTemp.cantidad = productoTemp.cantidad - 1;
+
+                ordenActual.push(productoTemp);
+                const variableAux = document.getElementById(`cantidad${productoTemp.cantidad+1}${productoTemp.nombre}`);
+                const variableAux2 = document.getElementById(`cantidad${productoTemp.cantidad}${productoTemp.nombre}`);
+                if(variableAux2){
+                    if(variableAux){
+                        variableAux.remove();
+                    }
+                    variableAux2.innerText = `Cant.: ${productoTemp.cantidad}`;
+                }
+                else{
+                    variableAux.innerHTML = `<p id="cantidad${productoTemp.cantidad}${productoTemp.nombre}"> Cant.: ${productoTemp.cantidad}</p>`;
+                }
+            }
+            swal({
+                title: "Producto borrado!",
+                text: `Se borro una unidad de ${productoTemp.nombre} del carrito`,
+                icon: "warning",
+                button: "OK",
+              });
             actualizarDom();
+            guardarOrdenLocalStorage();
         });
 }
 
@@ -215,13 +154,38 @@ function mostrarProductos(){
                         `
         seccionMenu.appendChild(div);
         let btnClickeado = document.getElementById(`btnCardId${prod.id}`);
-        btnClickeado.addEventListener("click", ()=>{console.log(prod.id);});
         btnClickeado.addEventListener("click", ()=>{agregarCarrito(prod);});
-        actualizarListaMenu();
         actualizarDom();
     })
 }
 
+//Funcion guardar local
+const guardarLocal = (clave, valor) => { localStorage.setItem(clave, valor) };
+
+//Guarda OrdenActual en local storage
+function guardarOrdenLocalStorage(){
+    guardarLocal("ordenActualLocalStorage",JSON.stringify(ordenActual));
+}
+
+
+//Funcion que lee si hay una orden guardada en el Local Storage y la trae a la orden actual
+function leerOrdenLocalStorage(){
+    const ordenGuardada = JSON.parse(localStorage.getItem("ordenActualLocalStorage"));
+    if(ordenGuardada){
+        for(const obj of ordenGuardada){
+            const objTemp = new producto;
+            objTemp.id = obj.id;
+            objTemp.nombre = obj.nombre;
+            objTemp.precio = obj.precio;
+            objTemp.cantidad = obj.cantidad;
+            objTemp.precioSemi = obj.precioSemi;
+            agregarCarrito(objTemp);
+            actualizarDom();
+        }
+    }
+    primerAcceso = false;
+}
 
 //FUNCION PRINCIPAL-----------------------------------------------------------
+leerOrdenLocalStorage();
 mostrarProductos();

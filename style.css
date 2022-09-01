@@ -41,6 +41,12 @@
     font-size: 120%;
 }
 
+.totalNav2{
+    color: white;
+    font-size: 120%;
+    visibility: hidden;
+}
+
 #varibleTotal{
     color: white;
     font-size: 120%;
@@ -327,6 +333,14 @@
     }
 
     .btnCarrito{
+        visibility: hidden;
+    }
+
+    .totalNav2{
+        visibility: visible;
+    }
+
+    .totalNav{
         visibility: hidden;
     }
 }

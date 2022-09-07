@@ -15,9 +15,6 @@ class producto{
     }
 }
 
-//---------- ARRAY DE PRODUCTOS -----------------------------------------------------------------------
-const productos = [];
-
 //---------- Creacion de primeros productos -----------------------------------------------------------
 const producto01 = new producto(1, "Papas Fritas" , 500, "Medio kilo de papas cortadas en baston con cascara", 0, "../img/img-papasFritas.jpg");
 const producto02 = new producto(2, "Papas Fritas c/Cheddar y panceta", 700, "Papas cortadas en baston con cascara, con queso cheddar y panceta", 0, "../img/img-papasFritasConCyP.jpg");

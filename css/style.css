@@ -50,15 +50,9 @@
     visibility: visible;
 }
 
-.totalNav{
-    color: white;
-    font-size: 120%;
-}
-
 .totalNav2{
     color: white;
     font-size: 120%;
-    visibility: hidden;
 }
 
 #varibleTotal{
@@ -151,27 +145,7 @@
     font-weight: bolder;
 }
 
-.btnCarrito{
-    background-color: red;
-    border: solid white 2px;
-    margin-top: 5px;
-}
-
-.btnCarrito:hover{
-    background-color: white;
-    font-weight: bolder;
-    color: red;
-    border: solid red 2px;
-}
-
-.btnCarrito:focus{
-    background-color: red;
-    border: solid white 2px;
-    margin-top: 5px;
-}
-
 .btnCarrito2{
-    visibility: hidden;
     background-color: red;
     border: solid white 2px;
 }
@@ -315,8 +289,34 @@
     z-index: 5;
 }
 
+#footerMenu{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
 
+.btnFooter{
+    background-color: red;
+    border: solid white 2px;
+    margin-top: 25px;
+}
 
+.btnFooter:hover{
+    background-color: white;
+    font-weight: bolder;
+    color: red;
+    border: solid red 2px;
+}
+
+.btnFooter:focus{
+    background-color: red;
+    border: solid white 2px;
+    color: white;
+}
+
+.modal-body-historico{
+    border-bottom: solid black 1px;
+}
 
 
 
@@ -333,15 +333,8 @@
         visibility: visible;
     }
 
-    .btnCarrito{
-        visibility: hidden;
-    }
 
     .totalNav2{
         visibility: visible;
-    }
-
-    .totalNav{
-        visibility: hidden;
     }
 }

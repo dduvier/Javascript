@@ -92,39 +92,49 @@ function mostrarCarrito(productoTemp){
 
         let btnEliminar = document.getElementById(`eliminarProducto${productoTemp.id}`);
         btnEliminar.addEventListener("click", ()=>{
-            let objetoBuscado;
-            objetoBuscado = productos.find((index)=>index.id == productoTemp.id);
-            if(productoTemp.cantidad == 1){
-                productoTemp.cantidad = 0;
-                objetoBuscado.cantidad = 0;
-                ordenActual = ordenActual.filter( prod => prod.id !== productoTemp.id);
-                btnEliminar.parentElement.remove();
-            }
-            if(productoTemp.cantidad > 1){
-                ordenActual = ordenActual.filter( prod => prod.id !== productoTemp.id);
-                productoTemp.cantidad = productoTemp.cantidad - 1;
-
-                ordenActual.push(productoTemp);
-                const variableAux = document.getElementById(`cantidad${productoTemp.cantidad+1}${productoTemp.nombre}`);
-                const variableAux2 = document.getElementById(`cantidad${productoTemp.cantidad}${productoTemp.nombre}`);
-                if(variableAux2){
-                    if(variableAux){
-                        variableAux.remove();
-                    }
-                    variableAux2.innerText = `Cant.: ${productoTemp.cantidad}`;
-                }
-                else{
-                    variableAux.innerHTML = `<p id="cantidad${productoTemp.cantidad}${productoTemp.nombre}"> Cant.: ${productoTemp.cantidad}</p>`;
-                }
-            }
             swal({
-                title: "Producto borrado!",
-                text: `Se borro una unidad de ${productoTemp.nombre} del carrito`,
+                title: `Desea borrar una unidad de ${productoTemp.nombre}?`,
+                text: `Se borrara solo una unidad de ${productoTemp.nombre} de su orden`,
                 icon: "warning",
-                button: "OK",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    let objetoBuscado;
+                    objetoBuscado = productos.find((index)=>index.id == productoTemp.id);
+                    if(productoTemp.cantidad == 1){
+                        productoTemp.cantidad = 0;
+                        objetoBuscado.cantidad = 0;
+                        ordenActual = ordenActual.filter( prod => prod.id !== productoTemp.id);
+                        btnEliminar.parentElement.remove();
+                    }
+                    if(productoTemp.cantidad > 1){
+                        ordenActual = ordenActual.filter( prod => prod.id !== productoTemp.id);
+                        productoTemp.cantidad = productoTemp.cantidad - 1;
+
+                        ordenActual.push(productoTemp);
+                        const variableAux = document.getElementById(`cantidad${productoTemp.cantidad+1}${productoTemp.nombre}`);
+                        const variableAux2 = document.getElementById(`cantidad${productoTemp.cantidad}${productoTemp.nombre}`);
+                        if(variableAux2){
+                            if(variableAux){
+                                variableAux.remove();
+                            }
+                            variableAux2.innerText = `Cant.: ${productoTemp.cantidad}`;
+                        }
+                        else{
+                            variableAux.innerHTML = `<p id="cantidad${productoTemp.cantidad}${productoTemp.nombre}"> Cant.: ${productoTemp.cantidad}</p>`;
+                        }
+                    }
+                    actualizarDom();
+                    guardarOrdenLocalStorage();
+                    swal(`Se borró una unidad de ${productoTemp.nombre} de su orden`, {
+                    icon: "success",
+                  });
+                } else {
+                  swal("Operacion de borrado Cancelada");
+                }
               });
-            actualizarDom();
-            guardarOrdenLocalStorage();
         });
 }
 
@@ -190,12 +200,13 @@ function enviarOrden(){
         }
         else{
             console.log("Ya esta en el Historial");
-            objetoBuscado = productos.find((index)=>index.id == prodTemp.id);
+            objetoBuscado = ordenHistorico.find((index)=>index.id == prodTemp.id);
             objetoBuscado.cantidad = objetoBuscado.cantidad + 1;
+            precioParcial(objetoBuscado);
             ordenHistorico = ordenHistorico.filter( prod => prod.id !== prodTemp.id);
             ordenHistorico.push(objetoBuscado);
-            const variableAux = document.getElementById(`cantidad${existeEnOrden.cantidad-1}${existeEnOrden.nombre}H`);
-            variableAux.innerHTML = `<p id="cantidad${existeEnOrden.cantidad}${existeEnOrden.nombre}H"> Cant.: ${existeEnOrden.cantidad}</p>`;
+            const variableAux = document.getElementById(`cantidad${objetoBuscado.cantidad-1}${objetoBuscado.nombre}H`);
+            variableAux.innerHTML = `<p id="cantidad${objetoBuscado.cantidad}${objetoBuscado.nombre}H"> Cant.: ${objetoBuscado.cantidad}</p>`;
         }
     precioParcial(prodTemp);
     } );
@@ -205,15 +216,49 @@ function enviarOrden(){
     actualizarDom();
 }
 
+
+
 //FUNCION PRINCIPAL-----------------------------------------------------------
 leerOrdenLocalStorage();
 leerOrdenHistoricaLocalStorage();
 primerAcceso = false;
 mostrarProductos();
 btnCerrarMesa.addEventListener("click", ()=> {
-    logOut();
-    window.location = "../index.html";
+    swal({
+        title: "Cerrar mesa?",
+        text: "Si cierra la mesa, se perdera la orden actual y el historial de ordenes",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            logOut();
+            swal("Su mesa fue cerrada", {
+                icon: "success",
+            });
+            window.location = "../index.html";
+        } 
+    });
 });
+
 btnEnviarOrden.addEventListener("click", ()=>{
-    enviarOrden();
+    swal({
+        title: "Enviar Orden?",
+        text: "Confirma el envio del pedido a la cocina para su preparacion?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete){
+            enviarOrden();
+            swal("Su pedido fue enviado!", {
+                icon: "success",
+            });
+        } 
+        else{
+            swal("NO se envio el pedido..");
+        }
+    });
 });

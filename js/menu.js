@@ -4,6 +4,8 @@ const btnCardId = document.getElementById("btnCardId");
 const seccionMenu = document.getElementById("menu");
 const carritoModal = document.getElementById("productosEnCarrito");
 const carritoModalHistorico = document.getElementById("productosEnCarritoHistorico");
+const carritoBorrarTodo = document.getElementById("carritoBorrarTodo");
+const totalHistorico = document.getElementById("precioHistorico");
 const btnCerrarMesa = document.getElementById("cerrarMesa");
 const btnEnviarOrden = document.getElementById("enviarOrden");
 const btnHistoricoOrden = document.getElementById("HistoricoOrden");
@@ -21,6 +23,7 @@ function actualizarDom(){
     let itemsCarritoObj2;
     let precioTotalTemp;
     let itemsCarritoTemp;
+    let precioHistoricoTemp = 0;
     ordenActual.forEach(element => {
         precioParcial(element);
     });
@@ -30,6 +33,11 @@ function actualizarDom(){
     itemsCarritoObj2 = document.getElementById("itemsCarrito2");
     precioTotalObj2.innerText = precioTotalTemp;
     itemsCarritoObj2.innerText = itemsCarritoTemp;
+    totalHistorico.innerText = precioHistoricoTemp;
+    ordenHistorico.forEach( (producto) => {
+        precioHistoricoTemp += producto.precioSemi;
+    })
+    totalHistorico.innerText = precioHistoricoTemp;
 }
 
 //Agrega el producto al array ordenActual con push (mi pedido)
@@ -140,7 +148,6 @@ function mostrarCarrito(productoTemp){
 
 //Agrega el "div" del producto al MODAL del Carrito Historico
 function mostrarCarritoHistorico(productoTemp){
-
     let div = document.createElement("div");
     div.className = "productoEnCarritoHistorico";
     div.innerHTML = `
@@ -155,7 +162,6 @@ function mostrarCarritoHistorico(productoTemp){
     if(primerAcceso){
         ordenHistorico.push(productoTemp);
     }
-    //guardarOrdenHistoricaLocalStorage();
 }
 
 //Imprime CARDs y escucha clicks para agregarCarrito() y mostrarCarrito()
@@ -184,7 +190,6 @@ function mostrarProductos(){
 //Funcion que envia la orden al sector cocina, y mueve la orden actual al historico
 function enviarOrden(){
     ordenActual.forEach( (prodTemp) => {
-        //ordenHistorico.push(prodTemp);
         let objetoBuscado;
         let existeEnOrden;
         existeEnOrden = ordenHistorico.find( (index)=>index.id == prodTemp.id);
@@ -211,6 +216,7 @@ function enviarOrden(){
     precioParcial(prodTemp);
     } );
     ordenActual.splice(0,ordenActual.length);
+    carritoModal.innerHTML = "";
     guardarOrdenHistoricaLocalStorage();
     guardarOrdenLocalStorage();
     actualizarDom();
@@ -241,7 +247,6 @@ btnCerrarMesa.addEventListener("click", ()=> {
         } 
     });
 });
-
 btnEnviarOrden.addEventListener("click", ()=>{
     swal({
         title: "Enviar Orden?",
@@ -262,3 +267,62 @@ btnEnviarOrden.addEventListener("click", ()=>{
         }
     });
 });
+carritoBorrarTodo.addEventListener("click", ()=>{
+    swal({
+        title: "Borrar TODO?",
+        text: "Confirma borrar todo el carrito?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete){
+            ordenActual.splice(0,ordenActual.length);
+            carritoModal.innerHTML = "";
+            guardarOrdenLocalStorage();
+            actualizarDom();
+            swal("Carrito actual borrado!", {
+                icon: "success",
+            });
+        } 
+    });
+});
+btnPedirCuenta.addEventListener("click", ()=>{
+    swal("Elija un medio de pago...", {
+        buttons: {
+          cancelar: true,
+          efectivo: "Efectivo",
+          catch: {
+            text: "Tarjeta / Apps",
+            value: "virtual",
+          },
+        },
+      })
+      .then((value) => {
+        switch (value) {
+          case "efectivo":
+            swal("En breve se acercaran a cobrarle, gracias!", {
+                icon: "success",
+            })
+            .then((value) => {
+                
+              });
+            logOut();
+            window.location = "../index.html";
+            break;
+       
+          case "virtual":
+            swal("En breve se acercaran a cobrarle, gracias!", {
+                icon: "success",
+            });
+            logOut();
+            window.location = "../index.html";
+            break;
+       
+          default:
+            swal("Operacion cancelada", {
+                icon: "error",
+            });
+        }
+      });
+})

@@ -84,4 +84,5 @@ function logOut(){
     localStorage.removeItem("Mesa");
     localStorage.removeItem("Acceso");
     localStorage.removeItem("ordenActualLocalStorage");
+    localStorage.removeItem("ordenHistoricaLocalStorage");
 }

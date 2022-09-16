@@ -48,22 +48,18 @@ function agregarCarrito(prodTemp){
         existeEnOrden = ordenActual.find( (index)=>index.id == prodTemp.id);
         if(!existeEnOrden){
             objetoBuscado = productos.find((index)=>index.id == prodTemp.id);
-            if(prodTemp.cantidad){
-                objetoBuscado.cantidad = prodTemp.cantidad;
-            }else{
-                objetoBuscado.cantidad = 1;
-            }
+            objetoBuscado.cantidad = 1;
             ordenActual.push(objetoBuscado);
-            mostrarCarrito(prodTemp);
+            mostrarCarrito(objetoBuscado);
         }
         else{
             console.log("Ya esta en el carrito");
-            objetoBuscado = productos.find((index)=>index.id == prodTemp.id);
+            objetoBuscado = ordenActual.find((index)=>index.id == prodTemp.id);
             objetoBuscado.cantidad = objetoBuscado.cantidad + 1;
             ordenActual = ordenActual.filter( prod => prod.id !== prodTemp.id);
             ordenActual.push(objetoBuscado);
-            const variableAux = document.getElementById(`cantidad${existeEnOrden.cantidad-1}${existeEnOrden.nombre}`);
-            variableAux.innerHTML = `<p id="cantidad${existeEnOrden.cantidad}${existeEnOrden.nombre}"> Cant.: ${existeEnOrden.cantidad}</p>`;
+            const variableAux = document.getElementById(`cantidad${objetoBuscado.cantidad-1}${objetoBuscado.nombre}`);
+            variableAux.innerHTML = `<p id="cantidad${objetoBuscado.cantidad}${objetoBuscado.nombre}"> Cant.: ${objetoBuscado.cantidad}</p>`;
         }
         if(!primerAcceso){
             swal({
@@ -305,18 +301,19 @@ btnPedirCuenta.addEventListener("click", ()=>{
                 icon: "success",
             })
             .then((value) => {
-                
+                logOut();
+                window.location = "../index.html";
               });
-            logOut();
-            window.location = "../index.html";
             break;
        
           case "virtual":
             swal("En breve se acercaran a cobrarle, gracias!", {
                 icon: "success",
-            });
-            logOut();
-            window.location = "../index.html";
+            })
+            .then((value) => {
+                logOut();
+                window.location = "../index.html";
+              });
             break;
        
           default:
